@@ -5,31 +5,18 @@ import { chats } from "./data/data.js";
 const app = express();
 import dotenv from "dotenv";
 import Connection from "./Database/Connection.js";
+import router from "./routes/routes.js";
 
 app.use(cors());
 app.use(bodyParser.json({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(dotenv.config());
+app.use("/api/v1/", router);
 
+// app.use(dotenv.config());
 dotenv.config();
 const URL = process.env.MONGO_DB;
 
 Connection(URL);
-
-app.get("/api/chat", (req, res, next) => {
-  res.send(chats);
-});
-app.get("/single/:id", (req, res) => {
-  const { id } = req.params;
-  try {
-    const response = chats.find((c) => c._id === id);
-    console.log(response);
-    res.send(response);
-  } catch (error) {
-    console.log(error);
-    res.send(error);
-  }
-});
 
 const PORT = process.env.PORT || 5000;
 
