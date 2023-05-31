@@ -1,7 +1,9 @@
+import cloudinary from "../../Utils/cloudinary.js";
 import { generateJwtToken } from "../../Utils/generateJwtToken.js";
 import UserModel from "../../model/userModel.js";
 import bcrypt from "bcrypt";
 import asyncHandler from "express-async-handler";
+// import { v2 as cloudinary } from "cloudinary";
 
 export const registerApi = async (req, res) => {
   const { email, name, password, pic } = req.body;
@@ -20,12 +22,26 @@ export const registerApi = async (req, res) => {
         .status(400)
         .json({ status: false, message: "Email Already Exist" });
     }
-
+    let result = "";
+    console.log("running");
+    if (pic) {
+      console.log("ok");
+      result = await cloudinary.uploader.upload(pic, {
+        folder: "avatars",
+        width: 300,
+        crop: "scale",
+      });
+      console.log("ok", result);
+    }
+    console.log(result.secure_url);
     let user = await UserModel({
       name: name,
       email: email,
       password: email,
-      pic: pic,
+      pic: {
+        public_id: result?.public_id,
+        url: result?.secure_url,
+      },
     });
     // Encrypting Password
     const salt = await bcrypt.genSalt(10);
@@ -37,7 +53,8 @@ export const registerApi = async (req, res) => {
       return res.status(201).json({ data: data, success: true, token: token });
     }
   } catch (error) {
-    return res.status(404).json({ message: error.message, success: false });
+    // throw new Error(`${error.message}`)
+    return res.status(404).json({ message: error.response, success: false });
   }
 };
 

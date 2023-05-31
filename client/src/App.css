@@ -18,6 +18,10 @@
   }
 }
 
+.swal2-container.swal2-center > .swal2-popup {
+  background: #2b2b2b;
+  color: white;
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
