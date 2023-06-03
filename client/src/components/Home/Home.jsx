@@ -13,7 +13,7 @@ import React, { useRef } from "react";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { registerAction } from "../../Redux/action";
+import { loginAction, registerAction } from "../../Redux/action";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -51,6 +51,8 @@ const Home = () => {
   };
   const handleLogin = (e) => {
     e.preventDefault();
+    console.log("calling");
+    dispatch(loginAction(loginValues));
   };
 
   return (

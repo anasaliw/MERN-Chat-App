@@ -81,3 +81,25 @@ export const userLogin = asyncHandler(async (req, res, next) => {
     return res.status(500).json({ message: error.message, status: false });
   }
 });
+
+//! Find Users by search param
+export const getAllUsers = asyncHandler(async (req, res) => {
+  console.log(req.query.search);
+  try {
+    const keyword = req.query.search
+      ? {
+          $or: [
+            { name: { $regex: req.query.search, $options: "i" } },
+            { email: { $regex: req.query.search, $options: "i" } },
+          ],
+        }
+      : {};
+
+    const user = await UserModel.find(keyword).find({
+      _id: { $ne: req.user._id },
+    });
+    return res.status(200).json({ status: true, users: user });
+  } catch (error) {
+    return res.status(500).json({ status: false, message: error.message });
+  }
+});
