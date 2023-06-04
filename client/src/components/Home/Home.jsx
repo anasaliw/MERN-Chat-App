@@ -9,20 +9,30 @@ import {
   VStack,
   WrapItem,
 } from "@chakra-ui/react";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginAction, registerAction } from "../../Redux/action";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const dispatch = useDispatch();
   const handleFileRef = useRef(null);
+  const navigate = useNavigate();
+  let loginCheck = localStorage.getItem("token");
+  useEffect(() => {
+    if (loginCheck) {
+      navigate("/chat");
+    }
+  }, [loginCheck]);
+
   const [image, setImage] = useState();
   const [loginValues, setLoginValues] = useState({
     email: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
   const [registerValues, setRegisterValues] = useState({
     name: "",
     email: "",
@@ -45,14 +55,17 @@ const Home = () => {
     };
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    dispatch(registerAction({ ...registerValues, pic: image }));
+    setIsLoading(true);
+    await dispatch(registerAction({ ...registerValues, pic: image }));
+    setIsLoading(false);
   };
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("calling");
-    dispatch(loginAction(loginValues));
+    setIsLoading(true);
+    await dispatch(loginAction(loginValues));
+    setIsLoading(false);
   };
 
   return (
@@ -98,6 +111,7 @@ const Home = () => {
                   </FormControl>
                 </VStack>
                 <Button
+                  isLoading={isLoading}
                   type='submit'
                   width={"100%"}
                   marginTop={"20px"}

@@ -3,6 +3,7 @@ import { chats } from "../data/data.js";
 import { Protected } from "../middlewares/AuthMiddleware.js";
 import {
   getAllUsers,
+  getUserDetails,
   registerApi,
   userLogin,
 } from "../controllers/Auth/register.js";
@@ -14,6 +15,7 @@ router.get("/chats", (req, res, next) => {
 });
 router.post("/registerUser", registerApi);
 router.post("/loginUser", userLogin);
-router.route("/").get(Protected, getAllUsers);
+router.route("/getAllUsers").get(Protected, getAllUsers);
+router.route("/").get(Protected, getUserDetails);
 
 export default router;

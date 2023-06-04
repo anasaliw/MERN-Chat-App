@@ -16,12 +16,7 @@ const Chat = () => {
   }, []);
   return (
     <>
-      <Box>
-        hi
-        {chat?.map((data, index) => (
-          <Text key={index}>{data?.chatName}</Text>
-        ))}
-      </Box>
+      <Box>hi</Box>
     </>
   );
 };

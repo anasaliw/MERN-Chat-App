@@ -20,7 +20,7 @@ export const registerApi = async (req, res) => {
     if (exist) {
       return res
         .status(400)
-        .json({ status: false, message: "Email Already Exist" });
+        .json({ success: false, message: "Email Already Exist" });
     }
     let result = "";
     console.log("running");
@@ -73,12 +73,12 @@ export const userLogin = asyncHandler(async (req, res, next) => {
 
     const token = generateJwtToken(find._id);
     return res.status(200).json({
-      status: true,
+      success: true,
       data: find,
       token: token,
     });
   } catch (error) {
-    return res.status(500).json({ message: error.message, status: false });
+    return res.status(500).json({ message: error.message, success: false });
   }
 });
 
@@ -98,8 +98,18 @@ export const getAllUsers = asyncHandler(async (req, res) => {
     const user = await UserModel.find(keyword).find({
       _id: { $ne: req.user._id },
     });
-    return res.status(200).json({ status: true, users: user });
+    return res.status(200).json({ success: true, users: user });
   } catch (error) {
-    return res.status(500).json({ status: false, message: error.message });
+    return res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+export const getUserDetails = asyncHandler(async (req, res) => {
+  try {
+    // console.log(req.user._id)
+    const result = await UserModel.find({ _id: req.user._id });
+    return res.status(200).json({ success: true, data: result });
+  } catch (error) {
+    return res.status(500).json({ success: false, data: error.response });
   }
 });

@@ -17,8 +17,7 @@ export const registerAction = (data) => async (dispatch) => {
         }
       );
       dispatch({ type: "registerUser", payload: response });
-      localStorage.setItem("token", response.data.token);
-      sessionStorage.setItem("authToken", response.data.token);
+
       return response;
     }
   } catch (error) {
@@ -65,7 +64,7 @@ export const loginAction = (data) => async (dispatch) => {
   try {
     const response = await instancePost("loginUser", data);
     console.log(response);
-    if (response.data.status === true) {
+    if (response.data.success === true) {
       Swal.fire(
         "Success",
         response.data.message,
@@ -77,6 +76,8 @@ export const loginAction = (data) => async (dispatch) => {
         }
       );
       dispatch({ type: "loginUser", payload: response });
+      localStorage.setItem("token", response.data.token);
+      sessionStorage.setItem("authToken", response.data.token);
       return response;
     }
   } catch (error) {
@@ -84,6 +85,18 @@ export const loginAction = (data) => async (dispatch) => {
       buttons: false,
       timer: 2000,
     });
+    return error.response;
+  }
+};
+export const getUserDetailsAction = () => async (dispatch) => {
+  try {
+    const response = await instanceGet("");
+    console.log(response);
+    if (response.data.success === true) {
+      dispatch({ type: "getUserDetails", payload: response });
+      return response;
+    }
+  } catch (error) {
     return error.response;
   }
 };
