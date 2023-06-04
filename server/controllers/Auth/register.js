@@ -107,8 +107,8 @@ export const getAllUsers = asyncHandler(async (req, res) => {
 export const getUserDetails = asyncHandler(async (req, res) => {
   try {
     // console.log(req.user._id)
-    const result = await UserModel.find({ _id: req.user._id });
-    return res.status(200).json({ success: true, data: result });
+    const result = await UserModel.findOne({ _id: req.user._id });
+    return res.status(200).json({ success: true, user: result });
   } catch (error) {
     return res.status(500).json({ success: false, data: error.response });
   }

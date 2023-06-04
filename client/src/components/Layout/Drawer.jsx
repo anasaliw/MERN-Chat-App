@@ -18,16 +18,17 @@ const DrawerFile = ({ btnRef, isOpen, onOpen, onClose }) => {
         // drawerStyle={{ background: "red !important" }}
         // background='red'
         isOpen={isOpen}
-        bg='tomato'
+        // bg='tomato'
         // sx={{ background: "red !important" }}
         placement='left'
         onClose={onClose}
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
-        <DrawerContent bg={{ backgroundColor: "#2b2b2b !important" }}>
+        {/* <DrawerContent bg={{ backgroundColor: "#2b2b2b !important" }}> */}
+        <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Create your account</DrawerHeader>
+          <DrawerHeader>Search Users</DrawerHeader>
 
           <DrawerBody>
             <Input placeholder='Type here...' />

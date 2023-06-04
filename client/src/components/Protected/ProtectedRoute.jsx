@@ -9,7 +9,7 @@ const ProtectedRoute = ({ Component }) => {
     if (!loginCheck) {
       navigate("/");
     }
-  }, [loginCheck]);
+  }, [loginCheck, navigate]);
 
   return (
     <>
