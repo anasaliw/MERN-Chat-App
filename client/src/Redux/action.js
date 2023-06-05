@@ -90,7 +90,6 @@ export const loginAction = (data) => async (dispatch) => {
 export const getUserDetailsAction = () => async (dispatch) => {
   try {
     const response = await instanceGet("");
-    console.log(response);
     if (response.data.success === true) {
       dispatch({ type: "getUserDetails", payload: response });
       return response;
@@ -118,14 +117,30 @@ export const searchUsersAction = (search) => async (dispatch) => {
   }
 };
 
+export const fetchChats = () => async (dispatch) => {
+  try {
+    const response = await instanceGet(`chat/fetchChat`);
+    if (response.data.success === true) {
+      dispatch({ type: "fetchChats", payload: response });
+      return response;
+    }
+  } catch (error) {
+    Swal.fire("Fetch Chats Failed", error.response.data.message, "error", {
+      buttons: false,
+      timer: 2000,
+    });
+    return error.response;
+  }
+};
+
 //! Chat Routes Starts from here
 // ? No Reducer
 export const accessOrCreateChatAction = (userId) => async (dispatch) => {
   try {
-    const response = await instancePut("chat/createOrAccess", {
+    const response = await instancePost("chat/createOrAccess", {
       userId: userId,
     });
-    console.log(response);
+    // console.log(response);
     if (response.data.success === true) {
       Swal.fire(
         "Success",

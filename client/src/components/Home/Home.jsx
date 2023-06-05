@@ -25,7 +25,7 @@ const Home = () => {
     if (loginCheck) {
       navigate("/chat");
     }
-  }, [loginCheck]);
+  }, [loginCheck, navigate]);
 
   const [image, setImage] = useState();
   const [loginValues, setLoginValues] = useState({

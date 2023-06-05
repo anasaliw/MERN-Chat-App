@@ -11,17 +11,20 @@ import {
 import { Provider } from "react-redux";
 import store from "./Redux/store";
 import theme from "./theme";
+import ChatProvider from "./Context/Context";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ChakraProvider>
-        <ColorModeProvider>
-          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-          <App />
-        </ColorModeProvider>
-      </ChakraProvider>
+      <ChatProvider>
+        <ChakraProvider>
+          <ColorModeProvider>
+            <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+            <App />
+          </ColorModeProvider>
+        </ChakraProvider>
+      </ChatProvider>
     </Provider>
   </React.StrictMode>
 );

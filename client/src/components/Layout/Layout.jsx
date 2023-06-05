@@ -25,10 +25,12 @@ import React, { useEffect, useRef } from "react";
 // import SearchNormal from "iconsax-react";
 import { SearchNormal, ArrowDown2, Notification } from "iconsax-react";
 import DrawerFile from "./Drawer";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserDetailsAction, logoutAction } from "../../Redux/action";
 const Layout = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const btnRef = useRef();
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -40,6 +42,7 @@ const Layout = () => {
   };
   const handleLogout = () => {
     dispatch(logoutAction());
+    navigate("/");
   };
   useEffect(() => {
     fetchUserDetails();

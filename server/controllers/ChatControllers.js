@@ -52,13 +52,13 @@ export const fetchChat = asyncHandler(async (req, res) => {
       .populate("users", "-password")
       .populate("groupAdmin", "-password")
       .populate("latestMessage")
-      .sort(-1);
+      .sort({ updatedAt: -1 });
 
-    result = await User.populate(result, {
+    result = await UserModel.populate(result, {
       path: "latestMessage.sender",
       select: "name pic email",
     });
-    res.status(200).json({ success: true, data: result });
+    return res.status(200).json({ success: true, data: result });
   } catch (error) {
     throw new Error(`${error.response}`);
   }
