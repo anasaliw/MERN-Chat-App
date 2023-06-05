@@ -1,4 +1,4 @@
-import { instancePost, instanceGet } from "../config";
+import { instancePost, instanceGet, instancePut } from "../config";
 import Swal from "sweetalert2";
 
 export const registerAction = (data) => async (dispatch) => {
@@ -99,3 +99,181 @@ export const getUserDetailsAction = () => async (dispatch) => {
     return error.response;
   }
 };
+
+//! Search All Users
+export const searchUsersAction = (search) => async (dispatch) => {
+  try {
+    const response = await instanceGet(`/getAllUsers/?search=${search}`);
+    console.log(response);
+    if (response.data.success === true) {
+      dispatch({ type: "searchUsers", payload: response });
+      return response;
+    }
+  } catch (error) {
+    Swal.fire("Search Users Failed", error.response.data.message, "error", {
+      buttons: false,
+      timer: 2000,
+    });
+    return error.response;
+  }
+};
+
+//! Chat Routes Starts from here
+// ? No Reducer
+export const accessOrCreateChatAction = (userId) => async (dispatch) => {
+  try {
+    const response = await instancePut("chat/createOrAccess", {
+      userId: userId,
+    });
+    console.log(response);
+    if (response.data.success === true) {
+      Swal.fire(
+        "Success",
+        response.data.message,
+        "success",
+
+        {
+          buttons: false,
+          timer: 2000,
+        }
+      );
+      dispatch({ type: "accessChat", payload: response });
+      return response;
+    }
+  } catch (error) {
+    Swal.fire("Chat Access Failed", error.response.data.message, "error", {
+      buttons: false,
+      timer: 2000,
+    });
+    return error.response;
+  }
+};
+
+// ? No Reducer
+export const createChatGroupAction = (chatName, users) => async (dispatch) => {
+  try {
+    const response = await instancePut("chat/createGroupChat", {
+      chatName: chatName,
+      users: users,
+    });
+    console.log(response);
+    if (response.data.success === true) {
+      Swal.fire(
+        "Success",
+        response.data.message,
+        "success",
+
+        {
+          buttons: false,
+          timer: 2000,
+        }
+      );
+      dispatch({ type: "createGroup", payload: response });
+      return response;
+    }
+  } catch (error) {
+    Swal.fire("Group Creation Failed", error.response.data.message, "error", {
+      buttons: false,
+      timer: 2000,
+    });
+    return error.response;
+  }
+};
+
+// ? No Reducer
+export const renameGroupAction = (id, chatName) => async (dispatch) => {
+  try {
+    const response = await instancePut("chat/renameGroup", {
+      id: id,
+      chatName: chatName,
+    });
+    console.log(response);
+    if (response.data.success === true) {
+      Swal.fire(
+        "Success",
+        response.data.message,
+        "success",
+
+        {
+          buttons: false,
+          timer: 2000,
+        }
+      );
+      // dispatch({ type: "createGroup", payload: response });
+      return response;
+    }
+  } catch (error) {
+    Swal.fire("Rename group Failed", error.response.data.message, "error", {
+      buttons: false,
+      timer: 2000,
+    });
+    return error.response;
+  }
+};
+
+export const addToGroupAction = (id, userId) => async (dispatch) => {
+  try {
+    const response = await instancePut("chat/addToGroup", {
+      id: id,
+      userId: userId,
+    });
+    console.log(response);
+    if (response.data.success === true) {
+      Swal.fire(
+        "Success",
+        response.data.message,
+        "success",
+
+        {
+          buttons: false,
+          timer: 2000,
+        }
+      );
+      // dispatch({ type: "createGroup", payload: response });
+      return response;
+    }
+  } catch (error) {
+    Swal.fire("Add To Group Failed", error.response.data.message, "error", {
+      buttons: false,
+      timer: 2000,
+    });
+    return error.response;
+  }
+};
+
+export const removeFromGroupAction = (id, userId) => async (dispatch) => {
+  try {
+    const response = await instancePut("chat/removeFromGroup", {
+      id: id,
+      userId: userId,
+    });
+    console.log(response);
+    if (response.data.success === true) {
+      Swal.fire(
+        "Success",
+        response.data.message,
+        "success",
+
+        {
+          buttons: false,
+          timer: 2000,
+        }
+      );
+      // dispatch({ type: "createGroup", payload: response });
+      return response;
+    }
+  } catch (error) {
+    Swal.fire(
+      "Remove from Group Failed",
+      error.response.data.message,
+      "error",
+      {
+        buttons: false,
+        timer: 2000,
+      }
+    );
+    return error.response;
+  }
+};
+
+//! Chat Routes ends from here

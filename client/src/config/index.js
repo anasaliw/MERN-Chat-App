@@ -22,3 +22,13 @@ export const instancePost = (endpoint, data) => {
     },
   });
 };
+export const instancePut = (endpoint, data) => {
+  return axios.put(`${BASE_URL}${endpoint}`, data, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${
+        localStorage.getItem("token") || sessionStorage.getItem("authToken")
+      }`,
+    },
+  });
+};

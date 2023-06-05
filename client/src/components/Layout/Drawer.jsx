@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Drawer,
   DrawerBody,
@@ -9,9 +10,20 @@ import {
   DrawerOverlay,
   Input,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { searchUsersAction } from "../../Redux/action";
+import { SearchNormal } from "iconsax-react";
 
 const DrawerFile = ({ btnRef, isOpen, onOpen, onClose }) => {
+  const dispatch = useDispatch();
+  const [search, setSearch] = useState("");
+
+  const fetchSearchUsers = () => {
+    dispatch(searchUsersAction(search));
+  };
+  const { loading, users } = useSelector((state) => state.searchUserReducer);
+  console.log(users?.data?.users);
   return (
     <>
       <Drawer
@@ -31,15 +43,18 @@ const DrawerFile = ({ btnRef, isOpen, onOpen, onClose }) => {
           <DrawerHeader>Search Users</DrawerHeader>
 
           <DrawerBody>
-            <Input placeholder='Type here...' />
+            <Box display='flex' alignItems='center'>
+              <Input
+                placeholder='Type here...'
+                value={search}
+                marginRight='10px'
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <Button onClick={fetchSearchUsers}>
+                <SearchNormal cursor='pointer' size='32' color='#FF8A65' />
+              </Button>
+            </Box>
           </DrawerBody>
-
-          <DrawerFooter>
-            <Button variant='outline' mr={3} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button colorScheme='blue'>Save</Button>
-          </DrawerFooter>
         </DrawerContent>
       </Drawer>
     </>
