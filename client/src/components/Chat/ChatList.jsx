@@ -90,7 +90,7 @@ const ChatList = ({ chatList, selectedChat, setSelectedChat }) => {
   return (
     <>
       <VStack
-        width={{ base: "100%", md: "30%" }}
+        width={{ base: "100%", md: "35%" }}
         display={{ base: selectedChat ? "none" : "flex", md: "flex" }}
         padding='0px 15px'
         backgroundColor='#2D3748'
@@ -113,8 +113,9 @@ const ChatList = ({ chatList, selectedChat, setSelectedChat }) => {
         </Box>
         {chatList ? (
           <>
-            {chatList.map((chat) => (
+            {chatList.map((chat, index) => (
               <Box
+                key={index}
                 onClick={() => setSelectedChat(chat)}
                 cursor='pointer'
                 bg={selectedChat?._id === chat?._id ? "#38B2AC" : "#E8E8E8"}
@@ -184,7 +185,7 @@ const ChatList = ({ chatList, selectedChat, setSelectedChat }) => {
                 />
               </FormControl>
               <Box w='100%' d='flex' flexWrap='wrap'>
-                {selectedUsers?.map((data) => (
+                {selectedUsers?.map((data, index) => (
                   <Badge
                     // as={"span"}
                     key={data._id}
@@ -284,13 +285,17 @@ const ChatList = ({ chatList, selectedChat, setSelectedChat }) => {
 export default ChatList;
 
 export const checkChat = (loggedUser, ChatUser) => {
-  return loggedUser._id === ChatUser?.users[0]._id
-    ? ChatUser?.users[1].name
-    : ChatUser?.users[0].name;
+  if (loggedUser?._id === ChatUser?.groupAdmin?._id) {
+    return ChatUser?.chatName;
+  } else {
+    return loggedUser?._id === ChatUser?.users[0]?._id
+      ? ChatUser?.users[1]?.name
+      : ChatUser?.users[0]?.name;
+  }
 };
 
 const checkDp = (loggedUser, ChatUser) => {
-  return loggedUser._id === ChatUser?.users[0]._id
-    ? ChatUser?.users[1].pic.url
-    : ChatUser?.users[0].pic.url;
+  return loggedUser._id === ChatUser?.users[0]?._id
+    ? ChatUser?.users[1]?.pic?.url
+    : ChatUser?.users[0]?.pic?.url;
 };

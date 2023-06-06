@@ -1,10 +1,13 @@
-import { Box, IconButton, Text } from "@chakra-ui/react";
+import { Box, IconButton, Text, useDisclosure } from "@chakra-ui/react";
 import React from "react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { useSelector } from "react-redux";
 import { checkChat } from "./ChatList";
+import { Eye, Icon } from "iconsax-react";
+import GroupSettingsModal from "./GroupSettingsModal";
 
 const Conversation = ({ selectedChat, setSelectedChat }) => {
+  const { onOpen, onClose, isOpen } = useDisclosure();
   const { users } = useSelector((state) => state.getUserDetailsReducer);
   // console.log(users?.data?.user);
   console.log(selectedChat);
@@ -24,13 +27,24 @@ const Conversation = ({ selectedChat, setSelectedChat }) => {
         <Box display='flex' justifyContent='space-between'>
           <IconButton
             icon={<ArrowBackIcon />}
-            onClick={() => setSelectedChat("")}
+            onClick={() => setSelectedChat()}
           />
           <Text fontSize='4xl'>
             {checkChat(users?.data?.user, selectedChat)}
           </Text>
+          {selectedChat?.isGroupChat === true && (
+            <IconButton
+              onClick={onOpen}
+              icon={<Eye size={22} color='#FF8A65' />}
+            ></IconButton>
+          )}
         </Box>
       </Box>
+      <GroupSettingsModal
+        isOpen={isOpen}
+        onClose={onClose}
+        selectedChat={selectedChat}
+      />
     </>
   );
 };
