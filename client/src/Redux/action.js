@@ -167,7 +167,7 @@ export const accessOrCreateChatAction = (userId) => async (dispatch) => {
 // ? No Reducer
 export const createChatGroupAction = (chatName, users) => async (dispatch) => {
   try {
-    const response = await instancePut("chat/createGroupChat", {
+    const response = await instancePost("chat/createGroupChat", {
       chatName: chatName,
       users: users,
     });
