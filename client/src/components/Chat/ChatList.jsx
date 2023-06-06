@@ -90,7 +90,8 @@ const ChatList = ({ chatList, selectedChat, setSelectedChat }) => {
   return (
     <>
       <VStack
-        width={{ base: "100%", md: "33%" }}
+        width={{ base: "100%", md: "30%" }}
+        display={{ base: selectedChat ? "none" : "flex", md: "flex" }}
         padding='0px 15px'
         backgroundColor='#2D3748'
         overflowY='scroll'
@@ -99,7 +100,7 @@ const ChatList = ({ chatList, selectedChat, setSelectedChat }) => {
         <Box
           marginTop='20px'
           display='flex'
-          w='100%'
+          width='100%'
           justifyContent='space-between'
           alignItems='center'
         >
@@ -282,7 +283,7 @@ const ChatList = ({ chatList, selectedChat, setSelectedChat }) => {
 
 export default ChatList;
 
-const checkChat = (loggedUser, ChatUser) => {
+export const checkChat = (loggedUser, ChatUser) => {
   return loggedUser._id === ChatUser?.users[0]._id
     ? ChatUser?.users[1].name
     : ChatUser?.users[0].name;

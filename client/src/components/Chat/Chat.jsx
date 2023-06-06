@@ -23,13 +23,18 @@ const Chat = () => {
     fetchAvailableChat();
   }, [reHit]);
   return (
-    <Box>
+    <Box display='flex'>
       <ChatList
+        // style={{ width: "100%" }}
         chatList={chats?.data?.data}
         selectedChat={selectedChat}
         setSelectedChat={setSelectedChat}
       />
-      <Conversation />
+      <Conversation
+        // style={{ width: "100%" }}
+        selectedChat={selectedChat}
+        setSelectedChat={setSelectedChat}
+      />
     </Box>
   );
 };
