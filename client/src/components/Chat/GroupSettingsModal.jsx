@@ -36,7 +36,6 @@ const GroupSettingsModal = ({ isOpen, onClose, selectedChat }) => {
   const [chatName, setChatName] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
-  console.log(selectedChat?.users);
   const searchUsers = useSelector((state) => state.searchUserReducer);
   const { users } = useSelector((state) => state.getUserDetailsReducer);
 

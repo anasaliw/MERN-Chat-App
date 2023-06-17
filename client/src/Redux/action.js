@@ -262,7 +262,6 @@ export const removeFromGroupAction = (id, userId) => async (dispatch) => {
       id: id,
       userId: userId,
     });
-    console.log(response);
     if (response.data.success === true) {
       Swal.fire(
         "Success",
@@ -292,3 +291,44 @@ export const removeFromGroupAction = (id, userId) => async (dispatch) => {
 };
 
 //! Chat Routes ends from here
+
+//! Messages Actions Starts here
+export const sendMessageAction = (content, chatId) => async (dispatch) => {
+  try {
+    const response = await instancePost("message/sendMessage", {
+      content: content,
+      chatId: chatId,
+    });
+    console.log(response);
+    if (response.data.success === true) {
+      // dispatch({ type: "createGroup", payload: response });
+      return response;
+    }
+  } catch (error) {
+    Swal.fire("Message Sending Failed", error.response.data.message, "error", {
+      buttons: false,
+      timer: 2000,
+    });
+    return error.response;
+  }
+};
+
+//! Messages Actions Starts here
+export const fetchMessagesAction = (id) => async (dispatch) => {
+  try {
+    const response = await instanceGet(`message/fetchMessage/${id}`);
+    console.log(response);
+    if (response.data.success === true) {
+      dispatch({ type: "fetchMessages", payload: response });
+      return response;
+    }
+  } catch (error) {
+    Swal.fire("Message Fetching Failed", error.response.data.message, "error", {
+      buttons: false,
+      timer: 2000,
+    });
+    return error.response;
+  }
+};
+
+//! Messages Actions Ends here

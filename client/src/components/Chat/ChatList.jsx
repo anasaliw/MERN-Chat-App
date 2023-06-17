@@ -95,7 +95,7 @@ const ChatList = ({ chatList, selectedChat, setSelectedChat }) => {
         padding='0px 15px'
         backgroundColor='#2D3748'
         overflowY='scroll'
-        minHeight='91vh'
+        minHeight='90.8vh'
       >
         <Box
           marginTop='20px'
