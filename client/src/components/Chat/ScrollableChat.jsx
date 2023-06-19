@@ -6,8 +6,8 @@ import { useSelector } from "react-redux";
 
 const ScrollableChat = ({ messages }) => {
   const { users } = useSelector((state) => state.getUserDetailsReducer);
-  console.log("user1", users.data.user);
-  console.log(messages);
+  // console.log("user1", users.data.user);
+  // console.log(messages);
   return (
     <ScrollableFeed>
       {messages &&

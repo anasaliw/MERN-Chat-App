@@ -34,6 +34,7 @@ export const logoutAction = () => async (dispatch) => {
   try {
     // const response = await instanceGet("logout");
     localStorage.removeItem("token");
+    localStorage.removeItem("userData");
     sessionStorage.removeItem("authToken");
     // if (response.data.success === true) {
     //   Swal.fire(
@@ -74,8 +75,10 @@ export const loginAction = (data) => async (dispatch) => {
           timer: 2000,
         }
       );
+      console.log(response);
       dispatch({ type: "loginUser", payload: response });
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("userData", JSON.stringify(response.data.data));
       sessionStorage.setItem("authToken", response.data.token);
       return response;
     }
