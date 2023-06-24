@@ -21,6 +21,8 @@ import {
   ModalFooter,
   Modal,
 } from "@chakra-ui/react";
+import NotificationBadge from "react-notification-badge";
+import { Effect } from "react-notification-badge";
 import React, { useEffect, useRef } from "react";
 // import SearchNormal from "iconsax-react";
 import { SearchNormal, ArrowDown2, Notification } from "iconsax-react";
@@ -28,14 +30,20 @@ import DrawerFile from "./Drawer";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserDetailsAction, logoutAction } from "../../Redux/action";
+import { ChatState } from "../../Context/Context";
+import { getSender } from "../Chat/ScrollableChat";
 const Layout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { notifications, setNotifications, setSelectedChat, selectedChat } =
+    ChatState();
+
   const btnRef = useRef();
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const modalOpen = useDisclosure();
   const [open, setOpen] = useBoolean();
+  // const { users } = useSelector((state) => state.getUserDetailsReducer);
 
   const fetchUserDetails = () => {
     dispatch(getUserDetailsAction());
@@ -83,10 +91,35 @@ const Layout = () => {
               sx={{ paddingLeft: "-40px" }}
               as={Button}
               rightIcon={<Notification style={{ paddingLeft: "-40px" }} />}
-            ></MenuButton>
+            >
+              <NotificationBadge
+                count={notifications.length}
+                effect={Effect.SCALE}
+              />
+            </MenuButton>
             <MenuList>
-              <MenuItem>My Profile</MenuItem>
-              <MenuItem>Logout</MenuItem>
+              <MenuList pl={2}>
+                {!notifications.length && "No New Messages"}
+                {notifications.map((notif) => (
+                  <MenuItem
+                    color='black'
+                    key={notif._id}
+                    onClick={() => {
+                      setSelectedChat(notif.chat);
+                      setNotifications(
+                        notifications.filter((n) => n !== notif)
+                      );
+                    }}
+                  >
+                    {notif.chat.isGroupChat
+                      ? `New Message in ${notif.chat.chatName}`
+                      : `New Message from ${getSender(
+                          users?.data?.user,
+                          notif.chat.users
+                        )}`}
+                  </MenuItem>
+                ))}
+              </MenuList>
             </MenuList>
           </Menu>
           &nbsp; &nbsp;
@@ -100,7 +133,7 @@ const Layout = () => {
                 />
               </WrapItem>
             </MenuButton>
-            <MenuList>
+            <MenuList color='black'>
               <MenuItem onClick={modalOpen.onOpen}>My Profile</MenuItem>
               <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </MenuList>

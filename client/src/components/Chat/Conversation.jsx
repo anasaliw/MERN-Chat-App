@@ -19,11 +19,13 @@ import ScrollableChat from "./ScrollableChat";
 import io from "socket.io-client";
 import animationData from "../../Animations/typing.json";
 import Lottie from "react-lottie";
+import { ChatState } from "../../Context/Context";
 
 const ENDPOINT = "http://localhost:5000"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
 var socket, selectedChatCompare;
 
 const Conversation = ({ selectedChat, setSelectedChat }) => {
+  const { reHit, setReHit, notifications, setNotifications } = ChatState();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -92,15 +94,14 @@ const Conversation = ({ selectedChat, setSelectedChat }) => {
         !selectedChatCompare || // if chat is not selected or doesn't match current chat
         selectedChatCompare._id !== newMessageReceived.chat._id
       ) {
-        // if (!notification.includes(newMessageReceived)) {
-        //   setNotification([newMessageReceived, ...notification]);
-        //   setFetchAgain(!fetchAgain);
-        // }
+        setNotifications([...notifications, newMessageReceived]);
+        setReHit(!reHit);
       } else {
         setMessages([...messages, newMessageReceived]);
       }
     });
   });
+  console.log("notifications", notifications);
   const handleTyping = (e) => {
     setMessage(e.target.value);
     if (!socketConnected) return;
@@ -184,10 +185,11 @@ const Conversation = ({ selectedChat, setSelectedChat }) => {
           </Box>
         )}
         {selectedChat ? (
-          <>
+          <Box marginTop='auto'>
             {isTyping ? (
               <>
                 <Lottie
+                  // marginTop='auto'
                   options={defaultOptions}
                   height={50}
                   width={70}
@@ -203,7 +205,7 @@ const Conversation = ({ selectedChat, setSelectedChat }) => {
               value={message}
               onChange={handleTyping}
             />
-          </>
+          </Box>
         ) : (
           ""
         )}

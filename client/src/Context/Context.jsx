@@ -4,12 +4,18 @@ const ChatContext = createContext();
 
 const ChatProvider = ({ children }) => {
   const [reHit, setReHit] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [selectedChat, setSelectedChat] = useState();
 
   return (
     <ChatContext.Provider
       value={{
         reHit,
         setReHit,
+        notifications,
+        setNotifications,
+        selectedChat,
+        setSelectedChat,
       }}
     >
       {children}

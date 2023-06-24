@@ -8,7 +8,7 @@ import ChatList from "./ChatList";
 import Conversation from "./Conversation";
 
 const Chat = () => {
-  const [selectedChat, setSelectedChat] = useState();
+  // const [selectedChat, setSelectedChat] = useState();
 
   const dispatch = useDispatch();
   const fetchAvailableChat = async () => {
@@ -17,7 +17,7 @@ const Chat = () => {
 
   const { loading, chats } = useSelector((state) => state.getChatsReducer);
   // console.log(chats?.data?.data);
-  const { reHit, setReHit } = ChatState();
+  const { reHit, setReHit, selectedChat, setSelectedChat } = ChatState();
 
   useEffect(() => {
     fetchAvailableChat();
